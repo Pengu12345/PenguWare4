@@ -1,0 +1,14 @@
+{
+	"min_dummy": {
+		"display_name":"Dummy Minigame",
+		"description":"This is just a dummy minigame.",
+		"length":8,
+		"controls":"mouse",
+	},
+	"min_chrome": {
+		"display_name":"No internet",
+		"description":"This is just a dummy minigame.",
+		"length":8,
+		"controls":"space",
+	}
+}

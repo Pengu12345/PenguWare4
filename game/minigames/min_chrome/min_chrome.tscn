@@ -1,0 +1,92 @@
+[gd_scene load_steps=11 format=3 uid="uid://cmisy2reep425"]
+
+[ext_resource type="PackedScene" uid="uid://b4ij4yrsnx4p2" path="res://core/game/core_minigame.tscn" id="1_w3o1s"]
+[ext_resource type="Script" path="res://game/minigames/min_chrome/min_chrome.gd" id="2_vtwns"]
+[ext_resource type="PackedScene" uid="uid://d1wsosvp4f4e4" path="res://game/minigames/min_chrome/obstacle.tscn" id="3_s33vs"]
+[ext_resource type="Texture2D" uid="uid://bf8rjphaxv038" path="res://game/minigames/min_chrome/sprites/no_internet.png" id="4_gk5d6"]
+[ext_resource type="Texture2D" uid="uid://ba6mngnheu11a" path="res://game/minigames/min_chrome/sprites/ground.png" id="4_jm2pk"]
+[ext_resource type="Texture2D" uid="uid://bmisan144kyxb" path="res://game/minigames/min_chrome/sprites/dino_1.png" id="5_k276p"]
+[ext_resource type="Texture2D" uid="uid://5gtp71mcgcm2" path="res://game/minigames/min_chrome/sprites/dino_2.png" id="6_yke82"]
+[ext_resource type="Texture2D" uid="uid://dfbw5xggop5me" path="res://game/minigames/min_chrome/sprites/dino_oops.png" id="8_05w81"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ebind"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_k276p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_yke82")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_05w81")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h0rqp"]
+size = Vector2(79, 86)
+
+[node name="min_chrome" instance=ExtResource("1_w3o1s")]
+script = ExtResource("2_vtwns")
+obstacle_scene = ExtResource("3_s33vs")
+instruction = "Jump!"
+main_music = null
+
+[node name="Background" parent="." index="1"]
+color = Color(0.968627, 0.968627, 0.968627, 1)
+
+[node name="NoInternet" type="Sprite2D" parent="." index="2"]
+modulate = Color(1, 1, 1, 0.117647)
+position = Vector2(573, 223)
+texture = ExtResource("4_gk5d6")
+
+[node name="Ground" type="Sprite2D" parent="." index="3"]
+position = Vector2(728, 567)
+texture = ExtResource("4_jm2pk")
+
+[node name="Ground" type="Sprite2D" parent="Ground" index="0"]
+position = Vector2(1498, 0)
+texture = ExtResource("4_jm2pk")
+
+[node name="Ground2" type="Sprite2D" parent="Ground" index="1"]
+position = Vector2(2996, 0)
+texture = ExtResource("4_jm2pk")
+
+[node name="Ground2" type="Sprite2D" parent="." index="4"]
+modulate = Color(1, 1, 1, 0.658824)
+position = Vector2(531, 534)
+texture = ExtResource("4_jm2pk")
+
+[node name="Ground" type="Sprite2D" parent="Ground2" index="0"]
+position = Vector2(1498, 0)
+texture = ExtResource("4_jm2pk")
+
+[node name="Ground2" type="Sprite2D" parent="Ground2" index="1"]
+position = Vector2(2996, 0)
+texture = ExtResource("4_jm2pk")
+
+[node name="Obstacles" type="Node2D" parent="." index="5"]
+position = Vector2(1306, 555)
+
+[node name="Dinosaur" type="Node2D" parent="." index="6"]
+position = Vector2(143, 0)
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Dinosaur" index="0"]
+position = Vector2(187, 564)
+sprite_frames = SubResource("SpriteFrames_ebind")
+
+[node name="Collision" type="Area2D" parent="Dinosaur/Sprite" index="0"]
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Dinosaur/Sprite/Collision" index="0"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_h0rqp")
+
+[connection signal="area_entered" from="Dinosaur/Sprite/Collision" to="." method="_on_collision_area_entered"]

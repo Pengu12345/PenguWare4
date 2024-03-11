@@ -1,0 +1,39 @@
+[gd_scene load_steps=11 format=3 uid="uid://x5c7e1rjb7hn"]
+
+[ext_resource type="Script" path="res://core/game/core_stage.gd" id="1_kegcf"]
+[ext_resource type="Texture2D" uid="uid://0b3eh74551oq" path="res://resources/texture/ui/Mouse_icon.png" id="2_11ftc"]
+[ext_resource type="AudioStream" uid="uid://djkjb5rgv28is" path="res://resources/sound/music/mus_pengu_pre.wav" id="2_u1yvg"]
+[ext_resource type="AudioStream" uid="uid://bxp2qhjhl523j" path="res://resources/sound/music/mus_pengu_neutral.wav" id="3_at8wy"]
+[ext_resource type="AudioStream" uid="uid://cwqb0bgtxyf2t" path="res://resources/sound/music/mus_pengu_win.wav" id="3_vacb8"]
+[ext_resource type="Texture2D" uid="uid://d4klkkann34r4" path="res://resources/texture/ui/Space_icon.png" id="3_w3sfu"]
+[ext_resource type="AudioStream" uid="uid://dporhlegifliq" path="res://resources/sound/music/mus_pengu_loose.wav" id="4_scv5i"]
+[ext_resource type="AudioStream" uid="uid://cl8vxnj6eur1p" path="res://resources/sound/music/mus_pengu_speedup.wav" id="5_fflss"]
+[ext_resource type="PackedScene" uid="uid://darg56l8wtxuf" path="res://core/game/core_minigame_holder.tscn" id="6_a0mmo"]
+[ext_resource type="AudioStream" uid="uid://cit1m4vp67gnr" path="res://resources/sound/music/mus_pengu_gameover.wav" id="6_rli1n"]
+
+[node name="core_stage" type="Node2D"]
+script = ExtResource("1_kegcf")
+control_schemes = {
+"mouse": ExtResource("2_11ftc"),
+"space": ExtResource("3_w3sfu")
+}
+begin_music = ExtResource("2_u1yvg")
+neutral_music = ExtResource("3_at8wy")
+win_music = ExtResource("3_vacb8")
+lose_music = ExtResource("4_scv5i")
+speedup_music = ExtResource("5_fflss")
+levelup_music = ExtResource("5_fflss")
+boss_music = ExtResource("5_fflss")
+gameover_music = ExtResource("6_rli1n")
+
+[node name="main_music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_at8wy")
+
+[node name="minigame_slot" type="Node2D" parent="."]
+
+[node name="preview" type="ColorRect" parent="minigame_slot"]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0, 0, 1)
+
+[node name="minigame_holder" parent="." instance=ExtResource("6_a0mmo")]

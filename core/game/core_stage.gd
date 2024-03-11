@@ -1,0 +1,287 @@
+extends Node2D
+class_name Stage
+
+#Custom Enum types
+enum GameState {
+	BEGIN,
+	NEUTRAL,
+	IN_MINIGAME,
+	WIN,
+	LOSE,
+	SPEED_UP,
+	LEVEL_UP,
+	BOSS,
+	GAME_OVER
+}
+
+# Signals
+signal signal_new_beat
+
+# Variables
+@export_category("UI")
+@export var control_schemes = {}
+
+@export_category("Music Variables")
+@export var base_bpm = 120
+
+@export var begin_music : AudioStream
+@export var neutral_music : AudioStream
+@export var win_music : AudioStream
+@export var lose_music : AudioStream
+@export var speedup_music : AudioStream
+@export var levelup_music : AudioStream
+@export var boss_music : AudioStream
+@export var gameover_music : AudioStream
+
+@onready var jukebox = $main_music
+@onready var minigame_slot = $minigame_slot
+@onready var minigame_holder = $minigame_holder
+
+var current_bpm = base_bpm
+
+var current_time = 0.0 
+
+var current_beat = 0
+var next_beat_time = 0.0
+
+var speed_factor = 1
+var min_speed_factor = 0.5
+var max_speed_factor = 8
+
+@export_category("Game Variables")
+@export var max_lives = 4
+
+@onready var current_lives = max_lives
+var current_score = 1
+var current_level = 1
+var is_game_over = false
+
+var is_game_active = false
+
+var current_state = GameState.NEUTRAL
+var override_flag = GameState.NEUTRAL
+
+var queued_event = null
+var current_minigame : Minigame = null
+var current_minigame_id = ""
+
+var minigame_list : Array = ["min_dummy"]
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	_on_ready()
+
+func init_game():
+	is_game_active = true
+	is_game_over = false
+	
+	current_lives = max_lives
+	current_state = GameState.BEGIN
+	
+	current_score = 1
+	current_level = 1
+	
+	current_time = 0
+	current_beat = 0
+	next_beat_time = 0
+	
+	set_speed_factor(1)
+	
+	_on_init_game()
+	
+	_play_state_music()
+	_new_beat()
+
+func set_speed_factor(new_speed_factor):
+	speed_factor = clampf(new_speed_factor, min_speed_factor, max_speed_factor)
+	
+	# Recalculate the new music values using the new factor
+	current_bpm = base_bpm * speed_factor
+	next_beat_time = 1.0 / ( float(current_bpm)  / 60.0 )
+	print("Updated speed to be " + str(new_speed_factor) + ". New BPM: " + str(current_bpm) + " - Next beat: " + str(next_beat_time))
+	
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	if is_game_active:
+		current_time += delta
+		
+		if !is_game_over:
+			_on_process(delta)
+			
+			if current_time >= next_beat_time:
+				current_time = 0
+				current_beat += 1
+				_new_beat()
+	else:
+		if Input.is_action_just_pressed("mouse_left"):
+			init_game()
+
+func _new_beat():
+	# Preload the minigame for any funny animations
+	if current_state == GameState.NEUTRAL:
+		if current_beat == get_state_length(current_state) - 2:
+			minigame_holder.update_level(current_level)
+			# choose at random from the minigame list
+			_preload_minigame(current_minigame_id)
+	
+	# Unload the current minigame for any funny animations (offset)
+	if current_state == GameState.WIN or current_state == GameState.LOSE:
+		if current_beat == 1:
+			_unload_loaded_minigame()
+	
+	# Change any steps if we finished it's animation length
+	if current_beat >= get_state_length(current_state) and current_state != GameState.IN_MINIGAME:
+		current_beat = 0
+		_end_current_state()
+	
+	emit_signal("signal_new_beat", current_beat)
+	_on_new_beat()
+
+func _select_next_minigame_id():
+	var minigame_id = minigame_list[ randi() % minigame_list.size() ]
+	current_minigame_id = minigame_id
+
+func _begin_current_state():
+	if current_state == GameState.NEUTRAL:
+		if queued_event != null:
+			if typeof(queued_event) == TYPE_CALLABLE :
+				queued_event.call()
+				queued_event = null
+		
+		_select_next_minigame_id()
+	
+	if current_state == GameState.GAME_OVER:
+		set_speed_factor(1)
+	
+	_play_state_music()
+	
+	_on_new_state(current_state)
+
+func _end_current_state():
+	if current_state == GameState.GAME_OVER:
+		is_game_over = true
+		is_game_active = false
+		return
+		
+	# Effect changes depending on the state
+	# When we're in neutral, we switch to a Minigame.
+	if current_state == GameState.NEUTRAL:
+		current_state = GameState.IN_MINIGAME
+		_start_loaded_minigame()
+	else:
+		if override_flag != GameState.NEUTRAL:
+			current_state = override_flag
+			override_flag = GameState.NEUTRAL
+		else:
+			current_state = GameState.NEUTRAL
+	
+	# Whatever happens, begin the new state
+	_begin_current_state()
+
+func _preload_minigame(minigame_name : String):
+	var minigame_path = ResourcesManager.get_minigame_path_from_id( minigame_name )
+	
+	var loaded_minigame = load(minigame_path)
+	current_minigame = loaded_minigame.instantiate()
+	
+	current_minigame.speed_factor = speed_factor
+	current_minigame.level = current_level
+	
+	signal_new_beat.connect(current_minigame._new_beat)
+	current_minigame.signal_minigame_ended.connect(_minigame_end)
+	
+	$minigame_slot.add_child(current_minigame)
+
+func _unload_loaded_minigame():
+	current_minigame.queue_free()
+	current_minigame_id = ""
+
+func _start_loaded_minigame():
+	if !current_minigame:
+		print("ERROR: Can't start the loaded minigame as no minigame was loaded")
+		return
+	if current_minigame.has_started:
+		print("ERROR: Minigame already started.")
+		return
+	
+	current_minigame._start()
+	_on_minigame_start()
+
+func _minigame_end():
+	current_beat = 0
+	
+	signal_new_beat.disconnect(current_minigame._new_beat)
+	
+	if current_minigame.minigame_state != Minigame.State.WON:
+		current_state = GameState.LOSE
+	else:
+		current_state = GameState.WIN
+		current_score += 1
+	
+	_on_minigame_end(current_minigame.minigame_state)
+	_begin_current_state()
+
+func _queue_event(next_state : GameState, play_animation : bool, event : Callable):
+	if play_animation:
+		override_flag = next_state
+	
+	queued_event = event
+
+func _game_over():
+	override_flag = GameState.GAME_OVER
+	_on_game_over()
+
+# Music functions
+func _play_state_music():
+	var chosen_music : AudioStream
+	
+	match current_state:
+		GameState.BEGIN : chosen_music =  begin_music
+		GameState.NEUTRAL : chosen_music = neutral_music
+		GameState.WIN     : chosen_music = win_music
+		GameState.LOSE    : chosen_music = lose_music
+		GameState.SPEED_UP: chosen_music = speedup_music
+		GameState.LEVEL_UP: chosen_music = levelup_music
+		GameState.BOSS    : chosen_music = boss_music
+		GameState.GAME_OVER: chosen_music = gameover_music
+		_ : chosen_music = null
+		
+	if chosen_music:
+		jukebox.stop()
+		jukebox.stream = chosen_music
+		jukebox.pitch_scale = speed_factor
+		jukebox.play(0.0)
+#
+
+# Children functions
+func _on_ready():
+	pass
+func _on_init_game():
+	pass
+func _on_process(_delta):
+	pass
+func _on_new_beat():
+	pass
+func _on_new_state(new_state : GameState):
+	pass
+func _on_minigame_start():
+	pass
+func _on_minigame_end(minigame_state : Minigame.State):
+	pass
+func _on_game_over():
+	pass
+#-----
+
+# Helper functions
+func get_state_length(state : GameState):
+	match state:
+		GameState.BEGIN : return 2
+		GameState.NEUTRAL : return 4
+		GameState.WIN     : return 4
+		GameState.LOSE    : return 4
+		GameState.SPEED_UP: return 8
+		GameState.LEVEL_UP: return 8
+		GameState.BOSS    : return 8
+		GameState.GAME_OVER: return 8
+		_ : return 4
+#

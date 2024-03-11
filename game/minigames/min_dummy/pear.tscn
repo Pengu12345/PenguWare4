@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bykot2qva7fec"]
+
+[ext_resource type="Script" path="res://game/minigames/min_dummy/pear.gd" id="1_tnjdu"]
+[ext_resource type="Texture2D" uid="uid://3d8vxoigd15w" path="res://game/minigames/min_dummy/pear.png" id="2_dxodj"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8fx71"]
+radius = 73.0
+height = 190.0
+
+[node name="Pear" type="Node2D"]
+script = ExtResource("1_tnjdu")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_dxodj")
+
+[node name="Collision" type="Area2D" parent="."]
+
+[node name="Shape" type="CollisionShape2D" parent="Collision"]
+shape = SubResource("CapsuleShape2D_8fx71")
+
+[connection signal="input_event" from="Collision" to="." method="_on_collision_input_event"]
