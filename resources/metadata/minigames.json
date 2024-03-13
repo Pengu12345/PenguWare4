@@ -10,5 +10,11 @@
 		"description":"This is just a dummy minigame.",
 		"length":8,
 		"controls":"space",
+	},
+	"min_squareinator": {
+		"display_name":"Squareinator",
+		"description":"This is just a dummass minigame.",
+		"length":8,
+		"controls":"mouse",
 	}
 }
