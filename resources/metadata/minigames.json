@@ -13,7 +13,7 @@
 	},
 	"min_squareinator": {
 		"display_name":"Squareinator",
-		"description":"This is just a dummass minigame.",
+		"description":"Rotate shapes or die",
 		"length":8,
 		"controls":"mouse",
 	}
