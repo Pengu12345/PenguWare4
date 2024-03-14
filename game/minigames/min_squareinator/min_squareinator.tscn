@@ -1,0 +1,48 @@
+[gd_scene load_steps=9 format=3 uid="uid://ol48l5f4a34s"]
+
+[ext_resource type="PackedScene" uid="uid://b4ij4yrsnx4p2" path="res://core/game/core_minigame.tscn" id="1_mohul"]
+[ext_resource type="Shader" path="res://game/minigames/min_squareinator/min_squareinator.gdshader" id="2_42l1v"]
+[ext_resource type="Script" path="res://game/minigames/min_squareinator/min_squareinator.gd" id="2_rrrs3"]
+[ext_resource type="AudioStream" uid="uid://cwcrs22imav0q" path="res://resources/sound/music/minigames/mus_thinking_2_4.wav" id="3_o1ypq"]
+[ext_resource type="ArrayMesh" uid="uid://dumdw2jys7085" path="res://game/minigames/min_squareinator/triangle.obj" id="6_j8wh0"]
+[ext_resource type="ArrayMesh" uid="uid://bn4027px0g772" path="res://game/minigames/min_squareinator/triagle.obj" id="6_mnlp6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_msko3"]
+shader = ExtResource("2_42l1v")
+shader_parameter/shung = 16
+shader_parameter/aspect = Vector2(16, 9)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4bp0n"]
+
+[node name="min_squareinator" instance=ExtResource("1_mohul")]
+texture_filter = 1
+texture_repeat = 1
+script = ExtResource("2_rrrs3")
+instruction = "Rotate!"
+main_music = ExtResource("3_o1ypq")
+
+[node name="Background" parent="." index="1"]
+show_behind_parent = true
+offset_left = -44.0
+offset_top = -20.0
+offset_right = 1108.0
+offset_bottom = 628.0
+scale = Vector2(1.07601, 1.05642)
+
+[node name="Label" parent="UI" index="1"]
+offset_top = -156.0
+offset_bottom = -84.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="3"]
+material = SubResource("ShaderMaterial_msko3")
+position = Vector2(579, 323)
+scale = Vector2(2.60545, 1.48864)
+texture = SubResource("NoiseTexture2D_4bp0n")
+
+[node name="Triagle" type="MeshInstance3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0528491, 0, -0.0600395)
+mesh = ExtResource("6_mnlp6")
+
+[node name="Triangle" type="MeshInstance3D" parent="." index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00757274, 0, -0.352942)
+mesh = ExtResource("6_j8wh0")
