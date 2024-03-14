@@ -1,3 +1,4 @@
+#NOAHAMP, EG-GE
 extends Minigame
 
 var vertices =[
@@ -78,13 +79,11 @@ func _ready():
 	for i in mdt.get_edge_count():
 		edges[i]=[mdt.get_edge_vertex(i,0),mdt.get_edge_vertex(i,1)]
 		
-		
 	target = vertices.duplicate()
 	
 	while _checkmatch(vertices,target): #RANDOMLY ROTATE TARGET ROTATION UNTIL IT DOESNT MATCH
 		_rotateall(target,randf()*TAU,Vector3.DOWN,Vector3.ZERO)
 		_rotateall(target,randf()*TAU,Vector3.RIGHT,Vector3.ZERO)
-
 
 #Pengu custom, first beat
 func _on_start():
@@ -92,8 +91,6 @@ func _on_start():
 
 func _on_new_beat():
 	sizemult=1.05  #AMOUNT OF BEAT HOP, 1 IS DEFAULT SIZE
-
-
 
 func _process(delta):
 	
@@ -119,17 +116,14 @@ func _process(delta):
 	if !dragging and _checkmatch(vertices,target) and vel.length()<0.4:
 		_snapto(vertices,target,1)
 	
-	
 	queue_redraw() #RENDERS THE CURRENT FRAME. 
-	
 	
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		
+
 		if not dragging and event.pressed: #IF LEFT CLICK WASNT DOWN AND IS NOW DOWN
 			dragging = true #TELL EVERYONE THAT LEFT CLICK IS DOWN NOW
 			vel = Vector2.ZERO #STOP THE SHITCUBE FROM ROTATING ON ITS OWN
-			
 
 		if dragging and not event.pressed: #IF LEFT CLICK WAS DOWN BUT ITS NOW UP
 			dragging = false #TELL EVERYONE LEFT CLICK IS UP
@@ -143,7 +137,7 @@ func _draw():
 	_shitcube(edges,vertices,ccol) #DRAW THE MAIN SHAPE
 	pass
 
-func _shitcube(edg,ver,col): #THIS FUNCTION IS BAD, YOURE GONNA CRY IF YOU USE IT OUTSIDE OF SQUAREINATOR
+func _shitcube(edg,ver,col): #DRAWS THE SHAPES, VERY BAD FUNC, SORRY
 	for e in edg: #FOR ALL EDGES
 		var a =ver[e[0]]*msize*sizemult #MOVE FIRST VERTEX OF EDGE AWAY FROM 0,0 TO EMULATE SIZE INCREASE
 		var b =ver[e[1]]*msize*sizemult #MOVE SECOND VERTEX OF EDGE AWAY FROM 0,0 TO EMULATE SIZE INCREASE
@@ -159,7 +153,7 @@ func _rotateall(vert,rotation:float,axis:Vector3,origin:Vector3): #ROTATES SHAPE
 		i+=1
 	pass
 
-func _averageclosestdistance(v1,v2): #THIS FUNCTION ALSO SUCKS,, COPE
+func _averageclosestdistance(v1,v2): #THIS FUNCTION ALSO SUCKS, GOOD THING ITS DEPRECATED
 	var c =0
 	var d = INF 
 	for a in v1:
@@ -183,7 +177,7 @@ func _checkmatch(v1,v2): #ITERATE OVER EVERY VERTEX PAIR, CHECK IF ALL OF THEM A
 	
 func _snapto(v1,v2,d): #MOVE CLOSEST POINTS OF V1 TO V2 BY DISTANCE D
 	var c 
-	var e = INF #hihihihihihi
+	var e = INF 
 	var i=0
 	for a in v1:
 		c=0
