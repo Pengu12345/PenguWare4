@@ -876,7 +876,6 @@ _data = {
 
 [node name="stage_example" instance=ExtResource("1_262dt")]
 script = ExtResource("2_62xup")
-start_speed = 1.0
 control_schemes = {
 "keyboard": ExtResource("4_bdqnp"),
 "mouse": ExtResource("3_nq0gt"),
@@ -892,6 +891,7 @@ levelup_music = ExtResource("10_dqph3")
 boss_music = ExtResource("10_dqph3")
 nonstop_music = ExtResource("11_fwoe4")
 enable_nonstop_music = true
+debug_always_win = true
 
 [node name="minigame_slot" parent="." index="1"]
 position = Vector2(87, 50)

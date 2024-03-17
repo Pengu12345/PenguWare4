@@ -36,6 +36,7 @@ signal signal_new_beat
 @export var nonstop_music : AudioStream
 @export var enable_nonstop_music = false
 var last_music_position = 0
+var song_speed_factor = 1
 
 @onready var jukebox = $main_music
 @onready var minigame_slot = $minigame_slot
@@ -98,33 +99,40 @@ func init_game():
 	
 	set_speed_factor(1)
 	
-	_on_init_game()
-	
 	_play_state_music()
 	if enable_nonstop_music:
 		jukebox.stop()
 		jukebox.stream = nonstop_music
-		jukebox.pitch_scale = speed_factor
 		jukebox.play()
 	
+	_on_init_game()
 	_new_beat()
 
 func set_speed_factor(new_speed_factor):
-	speed_factor = clampf(new_speed_factor, min_speed_factor, max_speed_factor)
-	# Only for nonstop music
-	if enable_nonstop_music:
-		jukebox.pitch_scale = speed_factor
+	
+	song_speed_factor = new_speed_factor
+	
+	current_bpm = base_bpm * new_speed_factor
+
+	speed_factor = current_bpm / 120.0
 	
 	# Recalculate the new music values using the new factor
-	current_bpm = base_bpm * speed_factor
-	next_beat_time = 1.0 / ( float(current_bpm)  / 60.0 )
-	print("Updated speed to be " + str(new_speed_factor) + ". New BPM: " + str(current_bpm) + " - Next beat: " + str(next_beat_time))
+	next_beat_time = 1.0 / ( float(current_bpm)  / (60.0) )
+	print("------")
+	print("Updated speed to be " + str(new_speed_factor))
+	print("Next beat: " + str(next_beat_time))
+	print("New BPM: " + str(current_bpm))
+	print("------")
+	# Only for nonstop music
+	if enable_nonstop_music:
+		jukebox.pitch_scale = new_speed_factor
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if is_game_active:
 		if enable_nonstop_music:
 			delta = jukebox.get_playback_position() - last_music_position
+			delta /= song_speed_factor
 			last_music_position = jukebox.get_playback_position()
 			
 		current_time += delta
@@ -208,7 +216,7 @@ func _preload_minigame(minigame_name : String):
 	var loaded_minigame = load(minigame_path)
 	current_minigame = loaded_minigame.instantiate()
 	
-	current_minigame.speed_factor = (current_bpm / 120) + speed_factor - 1
+	current_minigame.speed_factor = speed_factor
 	current_minigame.level = current_level
 	
 	signal_new_beat.connect(current_minigame._new_beat)
@@ -308,7 +316,7 @@ func _on_game_over():
 # Helper functions
 func get_state_length(state : GameState):
 	match state:
-		GameState.BEGIN : return 2
+		GameState.BEGIN : return 0
 		GameState.NEUTRAL : return 4
 		GameState.WIN     : return 4
 		GameState.LOSE    : return 4
@@ -318,3 +326,9 @@ func get_state_length(state : GameState):
 		GameState.GAME_OVER: return 8
 		_ : return 4
 #
+
+
+func _on_main_music_finished():
+	if enable_nonstop_music:
+		last_music_position = 0
+		jukebox.play()

@@ -5,25 +5,23 @@ extends Stage
 @onready var background_animator : AnimationPlayer = $Front/background_animator
 @onready var event_label : Label = $Event
 
-@export var start_speed = 1.0
-
 var boss_id = "min_boss_wwsc"
 var next_minigames = []
 
 func _on_ready():
 	minigame_list = ["min_squareinator", "min_chrome", "min_dummy"]
-	next_minigames = minigame_list.duplicate()
-	next_minigames.shuffle()
-	
 	$Instruction.text = ""
 
 func _on_init_game():
 	background_animator.play("RESET")
 	main_animator.play("RESET")
 	
-	current_level = 1
+	set_speed_factor(1)
 	
-	set_speed_factor(start_speed)
+	next_minigames = minigame_list.duplicate()
+	next_minigames.shuffle()
+	
+	current_level = 1
 	
 	$Instruction.text = ""
 
@@ -31,12 +29,9 @@ func update_instruction_text():
 	$Instruction.text = current_minigame.instruction
 
 func _on_process(_delta):
-	
-	var animation_factor = (current_bpm / 120) + speed_factor - 1
-	
-	main_animator.speed_scale = animation_factor
-	sprite_animator.speed_scale = animation_factor
-	background_animator.speed_scale = animation_factor
+	main_animator.speed_scale = speed_factor
+	sprite_animator.speed_scale = speed_factor
+	background_animator.speed_scale = speed_factor
 	
 	$Score.text = "Score: " + str(current_score) + "\n Lives: " + str(current_lives)
 
@@ -83,6 +78,7 @@ func _on_minigame_end(minigame_state : Minigame.State):
 	if current_lives <= 0:
 		_game_over()
 		return
+
 	
 	if next_minigames.size() == 0:
 		# If we weren't in a boss fight, enter it
@@ -95,7 +91,7 @@ func _on_minigame_end(minigame_state : Minigame.State):
 			if current_level < 3:
 				_queue_event(GameState.LEVEL_UP, true, func() :current_level += 1)
 			else:
-				_queue_event(GameState.SPEED_UP, true, func() : set_speed_factor(speed_factor + 0.2))
+				_queue_event(GameState.SPEED_UP, true, func() : set_speed_factor(song_speed_factor + 0.2))
 	
 func get_state_length(state : GameState):
 	match state:

@@ -37,3 +37,5 @@ offset_bottom = 648.0
 color = Color(0, 0, 0, 1)
 
 [node name="minigame_holder" parent="." instance=ExtResource("6_a0mmo")]
+
+[connection signal="finished" from="main_music" to="." method="_on_main_music_finished"]
