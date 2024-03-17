@@ -89,4 +89,8 @@ sprite_frames = SubResource("SpriteFrames_ebind")
 position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_h0rqp")
 
+[node name="Label" parent="UI" index="1"]
+offset_top = 492.0
+offset_bottom = 564.0
+
 [connection signal="area_entered" from="Dinosaur/Sprite/Collision" to="." method="_on_collision_area_entered"]

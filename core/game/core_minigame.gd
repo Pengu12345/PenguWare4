@@ -15,6 +15,8 @@ enum State {
 
 @export var main_music : AudioStream = null
 @onready var music_player = $music_player
+var ignore_music = false
+
 
 @onready var clock = $UI/clock
 @onready var clock_animator = $UI/clock/clock_animator
@@ -104,7 +106,7 @@ func play_local_sfx(path : String, db = 0, adapt_speed = false):
 		print("ERROR: Could not find the sound at path " + path)
 
 func play_music():
-	if main_music:
+	if main_music && !ignore_music:
 		music_player.stream = main_music
 		music_player.pitch_scale = speed_factor
 		music_player.stop()

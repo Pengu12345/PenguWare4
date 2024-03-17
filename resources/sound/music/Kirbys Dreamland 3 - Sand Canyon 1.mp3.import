@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://h3dqwx8fulyh"
+path="res://.godot/imported/Kirbys Dreamland 3 - Sand Canyon 1.mp3-933b05c04d95225b74fa62d255f4f9e8.mp3str"
+
+[deps]
+
+source_file="res://resources/sound/music/Kirbys Dreamland 3 - Sand Canyon 1.mp3"
+dest_files=["res://.godot/imported/Kirbys Dreamland 3 - Sand Canyon 1.mp3-933b05c04d95225b74fa62d255f4f9e8.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

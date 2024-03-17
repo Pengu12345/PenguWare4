@@ -15,8 +15,6 @@ func _on_ready():
 	next_minigames = minigame_list.duplicate()
 	next_minigames.shuffle()
 	
-	
-	
 	$Instruction.text = ""
 
 func _on_init_game():
@@ -33,9 +31,12 @@ func update_instruction_text():
 	$Instruction.text = current_minigame.instruction
 
 func _on_process(_delta):
-	main_animator.speed_scale = speed_factor
-	sprite_animator.speed_scale = speed_factor
-	background_animator.speed_scale = speed_factor
+	
+	var animation_factor = (current_bpm / 120) + speed_factor - 1
+	
+	main_animator.speed_scale = animation_factor
+	sprite_animator.speed_scale = animation_factor
+	background_animator.speed_scale = animation_factor
 	
 	$Score.text = "Score: " + str(current_score) + "\n Lives: " + str(current_lives)
 
@@ -96,7 +97,17 @@ func _on_minigame_end(minigame_state : Minigame.State):
 			else:
 				_queue_event(GameState.SPEED_UP, true, func() : set_speed_factor(speed_factor + 0.2))
 	
-	
+func get_state_length(state : GameState):
+	match state:
+		GameState.BEGIN : return 0
+		GameState.NEUTRAL : return 4
+		GameState.WIN     : return 4
+		GameState.LOSE    : return 4
+		GameState.SPEED_UP: return 8
+		GameState.LEVEL_UP: return 8
+		GameState.BOSS    : return 8
+		GameState.GAME_OVER: return 8
+		_ : return 4	
 
 func _on_game_over():
-	pass
+	next_minigames = minigame_list.duplicate()

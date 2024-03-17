@@ -22,7 +22,7 @@ signal signal_new_beat
 @export var control_schemes = {}
 
 @export_category("Music Variables")
-@export var base_bpm = 120
+@export var base_bpm = 120.00
 
 @export var begin_music : AudioStream
 @export var neutral_music : AudioStream
@@ -32,6 +32,10 @@ signal signal_new_beat
 @export var levelup_music : AudioStream
 @export var boss_music : AudioStream
 @export var gameover_music : AudioStream
+
+@export var nonstop_music : AudioStream
+@export var enable_nonstop_music = false
+var last_music_position = 0
 
 @onready var jukebox = $main_music
 @onready var minigame_slot = $minigame_slot
@@ -97,10 +101,19 @@ func init_game():
 	_on_init_game()
 	
 	_play_state_music()
+	if enable_nonstop_music:
+		jukebox.stop()
+		jukebox.stream = nonstop_music
+		jukebox.pitch_scale = speed_factor
+		jukebox.play()
+	
 	_new_beat()
 
 func set_speed_factor(new_speed_factor):
 	speed_factor = clampf(new_speed_factor, min_speed_factor, max_speed_factor)
+	# Only for nonstop music
+	if enable_nonstop_music:
+		jukebox.pitch_scale = speed_factor
 	
 	# Recalculate the new music values using the new factor
 	current_bpm = base_bpm * speed_factor
@@ -110,13 +123,17 @@ func set_speed_factor(new_speed_factor):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if is_game_active:
+		if enable_nonstop_music:
+			delta = jukebox.get_playback_position() - last_music_position
+			last_music_position = jukebox.get_playback_position()
+			
 		current_time += delta
 		
 		if !is_game_over:
 			_on_process(delta)
 			
 			if current_time >= next_beat_time:
-				current_time = 0
+				current_time -= next_beat_time
 				current_beat += 1
 				_new_beat()
 	else:
@@ -191,7 +208,7 @@ func _preload_minigame(minigame_name : String):
 	var loaded_minigame = load(minigame_path)
 	current_minigame = loaded_minigame.instantiate()
 	
-	current_minigame.speed_factor = speed_factor
+	current_minigame.speed_factor = (current_bpm / 120) + speed_factor - 1
 	current_minigame.level = current_level
 	
 	signal_new_beat.connect(current_minigame._new_beat)
@@ -211,6 +228,7 @@ func _start_loaded_minigame():
 		print("ERROR: Minigame already started.")
 		return
 	
+	current_minigame.ignore_music = enable_nonstop_music
 	current_minigame._start()
 	_on_minigame_start()
 
@@ -261,7 +279,7 @@ func _play_state_music():
 		GameState.GAME_OVER: chosen_music = gameover_music
 		_ : chosen_music = null
 		
-	if chosen_music:
+	if chosen_music && !enable_nonstop_music:
 		jukebox.stop()
 		jukebox.stream = chosen_music
 		jukebox.pitch_scale = speed_factor

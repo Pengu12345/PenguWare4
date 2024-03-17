@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://thumwe6hh0ho"]
+[gd_scene load_steps=26 format=3 uid="uid://thumwe6hh0ho"]
 
 [ext_resource type="PackedScene" uid="uid://d4kqgv2rum2hs" path="res://core/game/core_stage.tscn" id="1_262dt"]
 [ext_resource type="Script" path="res://game/stages/stage_example/stage_example.gd" id="2_62xup"]
@@ -12,6 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://cu13tnegpfojd" path="res://resources/sound/music/stages/orch/mus_orch_win.wav" id="8_50ltc"]
 [ext_resource type="AudioStream" uid="uid://dmsoqlqlr8mtw" path="res://resources/sound/music/stages/orch/mus_orch_loose.wav" id="9_cv2bh"]
 [ext_resource type="AudioStream" uid="uid://jocjmowasx56" path="res://resources/sound/music/stages/orch/mus_orch_speedup.wav" id="10_dqph3"]
+[ext_resource type="AudioStream" uid="uid://cnwr63kb5qlrs" path="res://resources/sound/music/epic_song.ogg" id="11_fwoe4"]
 
 [sub_resource type="Animation" id="Animation_p2biv"]
 length = 0.001
@@ -881,6 +882,7 @@ control_schemes = {
 "mouse": ExtResource("3_nq0gt"),
 "space": ExtResource("4_iib45")
 }
+base_bpm = 160.0
 begin_music = ExtResource("6_e0m3c")
 neutral_music = ExtResource("7_20bsa")
 win_music = ExtResource("8_50ltc")
@@ -888,6 +890,8 @@ lose_music = ExtResource("9_cv2bh")
 speedup_music = ExtResource("10_dqph3")
 levelup_music = ExtResource("10_dqph3")
 boss_music = ExtResource("10_dqph3")
+nonstop_music = ExtResource("11_fwoe4")
+enable_nonstop_music = true
 
 [node name="minigame_slot" parent="." index="1"]
 position = Vector2(87, 50)
