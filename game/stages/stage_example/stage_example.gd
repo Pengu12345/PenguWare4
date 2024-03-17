@@ -3,19 +3,20 @@ extends Stage
 @onready var sprite_animator : AnimationPlayer = $Front/sprite/animator
 @onready var main_animator : AnimationPlayer = $animator
 @onready var background_animator : AnimationPlayer = $Front/background_animator
+@onready var event_label : Label = $Event
 
 @export var start_speed = 1.0
 
 func _on_ready():
-	set_speed_factor(start_speed)
-	
-	minigame_list = ["min_chrome", "min_dummy"]
+	minigame_list = ["min_squareinator", "min_chrome", "min_dummy"]
 	
 	$Instruction.text = ""
 
 func _on_init_game():
 	background_animator.play("RESET")
 	main_animator.play("RESET")
+	
+	set_speed_factor(start_speed)
 	
 	$Instruction.text = ""
 
@@ -45,9 +46,15 @@ func _on_new_state(new_state :  GameState):
 			main_animator.play("win_animation")
 		GameState.LOSE:
 			main_animator.play("lose_animation")
+		GameState.SPEED_UP:
+			event_label.text = "Speed up!"
+			main_animator.play("event_animation")
+		GameState.LEVEL_UP:
+			event_label.text = "Level up!"
+			main_animator.play("event_animation")
 
 func _select_next_minigame_id():
-	current_minigame_id = minigame_list[current_score%minigame_list.size()]
+	current_minigame_id = "min_boss_wwsc" #minigame_list[current_score % minigame_list.size()]
 
 func _on_minigame_start():
 	pass
@@ -55,15 +62,17 @@ func _on_minigame_start():
 func _on_minigame_end(minigame_state : Minigame.State):
 	if minigame_state == Minigame.State.LOST:
 		current_lives -= 1
+		pass
 	
 	if current_lives <= 0:
 		_game_over()
 		return
-	
+		
+	#if (current_score-1) % 3 == 0:
 	current_level = (current_level + 1)
-	if current_level > 3:
-		current_level = 1
-		_queue_event(GameState.SPEED_UP, false, func() : set_speed_factor(speed_factor + 0.2))
+	if current_level > 3: current_level = 1
+	_queue_event(GameState.LEVEL_UP, true, func() : set_speed_factor(speed_factor + 0.2))
+	
 	
 
 func _on_game_over():

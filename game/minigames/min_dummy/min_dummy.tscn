@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://b1do5puw13uft"]
 
-[ext_resource type="PackedScene" uid="uid://b4ij4yrsnx4p2" path="res://core/game/core_minigame.tscn" id="1_b7xfk"]
+[ext_resource type="PackedScene" uid="uid://cyk50v17psa7f" path="res://core/game/core_minigame.tscn" id="1_b7xfk"]
 [ext_resource type="Script" path="res://game/minigames/min_dummy/min_dummy.gd" id="2_jujod"]
 [ext_resource type="PackedScene" uid="uid://bykot2qva7fec" path="res://game/minigames/min_dummy/pear.tscn" id="4_mjts1"]
 [ext_resource type="AudioStream" uid="uid://cl1hj16lg5bxk" path="res://resources/sound/music/minigames/mus_kitchen.wav" id="4_yd5x0"]

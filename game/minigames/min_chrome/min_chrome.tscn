@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://cmisy2reep425"]
 
-[ext_resource type="PackedScene" uid="uid://b4ij4yrsnx4p2" path="res://core/game/core_minigame.tscn" id="1_w3o1s"]
+[ext_resource type="PackedScene" uid="uid://cyk50v17psa7f" path="res://core/game/core_minigame.tscn" id="1_w3o1s"]
 [ext_resource type="Script" path="res://game/minigames/min_chrome/min_chrome.gd" id="2_vtwns"]
 [ext_resource type="PackedScene" uid="uid://d1wsosvp4f4e4" path="res://game/minigames/min_chrome/obstacle.tscn" id="3_s33vs"]
 [ext_resource type="Texture2D" uid="uid://bf8rjphaxv038" path="res://game/minigames/min_chrome/sprites/no_internet.png" id="4_gk5d6"]

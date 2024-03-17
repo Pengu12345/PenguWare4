@@ -1,6 +1,11 @@
 #NOAHAMP, EG-GE
 extends Minigame
 
+var sfx = {
+	"down":"res://resources/sound/sfx/select.wav",
+	"up":"res://resources/sound/sfx/select2.wav"
+}
+
 var vertices =[
 	Vector3(1,1,1),
 	Vector3(1,1,-1),
@@ -55,13 +60,13 @@ func _ready():
 	if level != 1: #EASY MODE PARAMS ARE ABOVE
 		if level == 2: #MEDIUM MODE PARAMS
 			difmesh = $Triangle
-			leniency = 0.3
+			leniency = 0.4
 			msize=140
 		if level >= 3: #HARD MODE PARAMS
 			difmesh = $Triagle
 			$Sprite2D.material.set_shader_parameter("shung",16-level*2) #MAKES SHADER CRUNCHIER
 			msize=200
-			leniency = 0.2
+			leniency = 0.3
 			thickness = 30
 		mdt.create_from_surface(difmesh.mesh,0)
 	
@@ -123,10 +128,15 @@ func _input(event):
 
 		if not dragging and event.pressed: #IF LEFT CLICK WASNT DOWN AND IS NOW DOWN
 			dragging = true #TELL EVERYONE THAT LEFT CLICK IS DOWN NOW
+			play_local_sfx(sfx["down"])
 			vel = Vector2.ZERO #STOP THE SHITCUBE FROM ROTATING ON ITS OWN
 
 		if dragging and not event.pressed: #IF LEFT CLICK WAS DOWN BUT ITS NOW UP
 			dragging = false #TELL EVERYONE LEFT CLICK IS UP
+			
+			var matching = _checkmatch(vertices, target)
+			if(matching): play_local_sfx(sfx["up"])
+			
 			vel=mouseDelta #IMPART THE VELOCITY IT LAST HAD WHILE BEING FORCED TO ROTATE
 
 func _draw():

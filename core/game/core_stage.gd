@@ -46,7 +46,7 @@ var next_beat_time = 0.0
 
 var speed_factor = 1
 var min_speed_factor = 0.5
-var max_speed_factor = 8
+var max_speed_factor = 100
 
 @export_category("Game Variables")
 @export var max_lives = 4
@@ -214,6 +214,7 @@ func _minigame_end():
 	
 	if current_minigame.minigame_state != Minigame.State.WON:
 		current_state = GameState.LOSE
+		current_score += 1
 	else:
 		current_state = GameState.WIN
 		current_score += 1

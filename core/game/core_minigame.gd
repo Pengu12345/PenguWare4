@@ -16,6 +16,7 @@ enum State {
 @export var main_music : AudioStream = null
 @onready var music_player = $music_player
 
+@onready var clock = $UI/clock
 @onready var clock_animator = $UI/clock/clock_animator
 @onready var beat_animator = $UI/Label/beat_animator
 @onready var beat_display = $UI/Label
@@ -34,22 +35,18 @@ var has_started = false
 func _ready():
 	has_started = false
 	
-	if is_boss:
-		$UI.visible = false
-	
 	clock_animator.speed_scale = speed_factor
 	beat_animator.speed_scale = speed_factor
 
 
 func _start():
 	has_started = true
-	if main_music:
-		music_player.stream = main_music
-		music_player.pitch_scale = speed_factor
-		music_player.stop()
-		music_player.play()
+	play_music()
 	
-	minigame_state = State.LOST
+	minigame_state = State.NEUTRAL
+	
+	clock.visible = false
+	beat_display.visible = false
 	
 	_on_start()
 
@@ -61,24 +58,32 @@ func _new_beat(beat):
 	
 	var beat_left = minigame_length - beat - 1
 	
-	if !is_boss and beat >= minigame_length:
-		_end_minigame()
+	if !is_boss:
+		if beat >= minigame_length:
+			_end_minigame()
 	
-	clock_animator.stop()
-	clock_animator.play("pulse")
-	
-	if beat_left <= 3 && beat_left >= 0:
-		play_local_sfx(global_sfx["timer"])
-	
-	if beat_left >= 0:
-		beat_animator.stop()
-		beat_animator.play("fade")
-		beat_display.text = str(beat_left)
+		clock_animator.stop()
+		clock_animator.play("pulse")
+		
+		if beat_left <= 7:
+			clock.visible = true
+		
+		if beat_left <= 3 && beat_left >= 0:
+			play_local_sfx(global_sfx["timer"])
+			beat_animator.stop()
+			beat_animator.play("fade")
+			beat_display.text = str(beat_left)
+	else:
+		if beat % minigame_length == 0 && minigame_state != State.NEUTRAL:
+			_end_minigame()
 	
 	_on_new_beat()
 
 func _end_minigame():
 	_on_end_minigame()
+	
+	if minigame_state == State.NEUTRAL: 
+		minigame_state = State.LOST
 	
 	emit_signal("signal_minigame_ended")
 	music_player.stop()
@@ -98,6 +103,17 @@ func play_local_sfx(path : String, db = 0, adapt_speed = false):
 	else:
 		print("ERROR: Could not find the sound at path " + path)
 
+func play_music():
+	if main_music:
+		music_player.stream = main_music
+		music_player.pitch_scale = speed_factor
+		music_player.stop()
+		music_player.play()
+
+func _on_music_player_finished():
+	if is_boss:
+		play_music()
+
 # Functions called by children classes
 func _on_start():
 	pass
@@ -106,3 +122,4 @@ func _on_new_beat():
 func _on_end_minigame():
 	pass
 #
+

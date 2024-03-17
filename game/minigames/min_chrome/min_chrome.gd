@@ -59,7 +59,7 @@ func _process(delta):
 		if Input.is_action_just_pressed("ui_accept") && controls_enabled:
 			velocity_y = 10 * speed_factor
 			is_on_ground = false
-			play_local_sfx(sfx["jump"], 5)
+			play_local_sfx(sfx["jump"])
 	
 	# Spawning obstacles
 	timer += delta
@@ -85,7 +85,7 @@ func spawn_obstacle():
 func _on_end_minigame():
 	if !has_lost:
 		minigame_state = State.WON
-		play_local_sfx(sfx["point"],2 -3)
+		play_local_sfx(sfx["point"],-8)
 
 
 func _on_collision_area_entered(area):
@@ -94,6 +94,6 @@ func _on_collision_area_entered(area):
 	dinosaur_sprite.play("hurt")
 	controls_enabled = false
 	
-	play_local_sfx(sfx["die"], 4)
+	play_local_sfx(sfx["die"])
 	
 	running_speed = 0
