@@ -52,6 +52,8 @@ func _on_start():
 	spawn_path.init()
 	
 	flinger.minigame = self
+	flinger.speed_factor = speed_factor
+	flinger.init()
 	flinger.started = true
 
 func _process(delta):

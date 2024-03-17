@@ -67,6 +67,11 @@ var current_minigame_id = ""
 
 var minigame_list : Array = ["min_dummy"]
 
+@export_category("Debug variables")
+@export var debug_always_win = false
+@export var debug_always_lose = false
+@export var debug_start_max_level = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_on_ready()
@@ -80,6 +85,8 @@ func init_game():
 	
 	current_score = 1
 	current_level = 1
+	
+	if debug_start_max_level: current_level = 3
 	
 	current_time = 0
 	current_beat = 0
@@ -211,6 +218,13 @@ func _minigame_end():
 	current_beat = 0
 	
 	signal_new_beat.disconnect(current_minigame._new_beat)
+	
+	if debug_always_win:
+		current_state = GameState.WIN
+		current_minigame.minigame_state = Minigame.State.WON
+	if debug_always_lose:
+		current_state = GameState.LOSE
+		current_minigame.minigame_state = Minigame.State.LOST
 	
 	if current_minigame.minigame_state != Minigame.State.WON:
 		current_state = GameState.LOSE

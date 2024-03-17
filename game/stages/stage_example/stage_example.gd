@@ -7,14 +7,23 @@ extends Stage
 
 @export var start_speed = 1.0
 
+var boss_id = "min_boss_wwsc"
+var next_minigames = []
+
 func _on_ready():
 	minigame_list = ["min_squareinator", "min_chrome", "min_dummy"]
+	next_minigames = minigame_list.duplicate()
+	next_minigames.shuffle()
+	
+	
 	
 	$Instruction.text = ""
 
 func _on_init_game():
 	background_animator.play("RESET")
 	main_animator.play("RESET")
+	
+	current_level = 1
 	
 	set_speed_factor(start_speed)
 	
@@ -52,14 +61,20 @@ func _on_new_state(new_state :  GameState):
 		GameState.LEVEL_UP:
 			event_label.text = "Level up!"
 			main_animator.play("event_animation")
+		GameState.BOSS:
+			event_label.text = "!!!Boss Stage!!!"
+			main_animator.play("event_animation")
 
 func _select_next_minigame_id():
-	current_minigame_id = "min_boss_wwsc" #minigame_list[current_score % minigame_list.size()]
+	if next_minigames.size() > 0:
+		current_minigame_id = next_minigames[0]
+		next_minigames.remove_at(0)
 
 func _on_minigame_start():
 	pass
 
 func _on_minigame_end(minigame_state : Minigame.State):
+	
 	if minigame_state == Minigame.State.LOST:
 		current_lives -= 1
 		pass
@@ -67,11 +82,19 @@ func _on_minigame_end(minigame_state : Minigame.State):
 	if current_lives <= 0:
 		_game_over()
 		return
-		
-	#if (current_score-1) % 3 == 0:
-	current_level = (current_level + 1)
-	if current_level > 3: current_level = 1
-	_queue_event(GameState.LEVEL_UP, true, func() : set_speed_factor(speed_factor + 0.2))
+	
+	if next_minigames.size() == 0:
+		# If we weren't in a boss fight, enter it
+		if current_minigame_id != boss_id:
+			_queue_event(GameState.BOSS, true, func() : current_minigame_id = boss_id)
+		else:
+			# Re-shuffle the minigame list, and level up, or speed up
+			next_minigames = minigame_list.duplicate()
+			next_minigames.shuffle()
+			if current_level < 3:
+				_queue_event(GameState.LEVEL_UP, true, func() :current_level += 1)
+			else:
+				_queue_event(GameState.SPEED_UP, true, func() : set_speed_factor(speed_factor + 0.2))
 	
 	
 

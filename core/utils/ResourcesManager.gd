@@ -1,6 +1,8 @@
 extends Node
 
 func get_minigame_metadata(name : String):
+	print("Getting data of '", name, "'")
+	
 	var json = get_json("res://resources/metadata/minigames.json")
 	
 	return json[name]

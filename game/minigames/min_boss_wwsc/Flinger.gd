@@ -33,8 +33,8 @@ func _on_ready():
 func init():
 	init_new_waiting_time()
 	sprite.play("default")
-	
-	fling_range *= speed_factor
+
+	print(speed_factor)
 
 func init_new_waiting_time():
 	waiting_time += randf_range(-0.5,0.5) - wait_variance
@@ -60,11 +60,11 @@ func _process(delta):
 				fling()
 	
 	position += velocity * delta
-	velocity *= 0.98 
+	velocity *= 0.98
 
 func readying():
 	current_state = Flinger_State.FLING
-	minigame.play_local_sfx(sfx["ready"])
+	minigame.play_local_sfx(sfx["ready"],-8, false)
 	sprite.play("ready")
 	init_new_fling_time()
 
@@ -74,7 +74,7 @@ func fling():
 	
 	sprite.flip_h = velocity.x < 0
 	
-	minigame.play_local_sfx(sfx["fling"])
+	minigame.play_local_sfx(sfx["fling"], -8, false)
 	sprite.play("default")
 	init_new_waiting_time()
 	current_state = Flinger_State.IDLE
