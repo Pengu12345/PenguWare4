@@ -7,11 +7,11 @@
 [ext_resource type="Texture2D" uid="uid://c2oki1rdsowin" path="res://resources/texture/ui/Keyboard_icon.png" id="4_bdqnp"]
 [ext_resource type="FontFile" uid="uid://bdhq7gk7o2i57" path="res://resources/fonts/OpenSans-Regular.ttf" id="4_gtb4w"]
 [ext_resource type="Texture2D" uid="uid://d4klkkann34r4" path="res://resources/texture/ui/Space_icon.png" id="4_iib45"]
-[ext_resource type="AudioStream" uid="uid://b82wj7mfjun2u" path="res://resources/sound/music/stages/orch/mus_orch_pre.wav" id="6_e0m3c"]
-[ext_resource type="AudioStream" uid="uid://dlsyysi5c3nau" path="res://resources/sound/music/stages/orch/mus_orch_neutral.wav" id="7_20bsa"]
-[ext_resource type="AudioStream" uid="uid://cu13tnegpfojd" path="res://resources/sound/music/stages/orch/mus_orch_win.wav" id="8_50ltc"]
-[ext_resource type="AudioStream" uid="uid://dmsoqlqlr8mtw" path="res://resources/sound/music/stages/orch/mus_orch_loose.wav" id="9_cv2bh"]
-[ext_resource type="AudioStream" uid="uid://jocjmowasx56" path="res://resources/sound/music/stages/orch/mus_orch_speedup.wav" id="10_dqph3"]
+[ext_resource type="AudioStream" uid="uid://b82wj7mfjun2u" path="res://resources/sound/music/stages/orch/mus_orch_pre.wav" id="6_7ftnl"]
+[ext_resource type="AudioStream" uid="uid://dlsyysi5c3nau" path="res://resources/sound/music/stages/orch/mus_orch_neutral.wav" id="7_vqdsq"]
+[ext_resource type="AudioStream" uid="uid://cu13tnegpfojd" path="res://resources/sound/music/stages/orch/mus_orch_win.wav" id="8_2ykmw"]
+[ext_resource type="AudioStream" uid="uid://dmsoqlqlr8mtw" path="res://resources/sound/music/stages/orch/mus_orch_loose.wav" id="9_eip51"]
+[ext_resource type="AudioStream" uid="uid://jocjmowasx56" path="res://resources/sound/music/stages/orch/mus_orch_speedup.wav" id="10_22tc2"]
 [ext_resource type="AudioStream" uid="uid://cnwr63kb5qlrs" path="res://resources/sound/music/epic_song.ogg" id="11_fwoe4"]
 
 [sub_resource type="Animation" id="Animation_p2biv"]
@@ -196,7 +196,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [true]
+"values": [false]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -881,17 +881,14 @@ control_schemes = {
 "mouse": ExtResource("3_nq0gt"),
 "space": ExtResource("4_iib45")
 }
-base_bpm = 160.0
-begin_music = ExtResource("6_e0m3c")
-neutral_music = ExtResource("7_20bsa")
-win_music = ExtResource("8_50ltc")
-lose_music = ExtResource("9_cv2bh")
-speedup_music = ExtResource("10_dqph3")
-levelup_music = ExtResource("10_dqph3")
-boss_music = ExtResource("10_dqph3")
+begin_music = ExtResource("6_7ftnl")
+neutral_music = ExtResource("7_vqdsq")
+win_music = ExtResource("8_2ykmw")
+lose_music = ExtResource("9_eip51")
+speedup_music = ExtResource("10_22tc2")
+levelup_music = ExtResource("10_22tc2")
+boss_music = ExtResource("10_22tc2")
 nonstop_music = ExtResource("11_fwoe4")
-enable_nonstop_music = true
-debug_always_win = true
 
 [node name="minigame_slot" parent="." index="1"]
 position = Vector2(87, 50)
@@ -950,6 +947,7 @@ position = Vector2(577, 812)
 texture = ExtResource("4_bdqnp")
 
 [node name="Instruction" type="Label" parent="." index="6"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

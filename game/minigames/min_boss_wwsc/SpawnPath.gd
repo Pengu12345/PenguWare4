@@ -14,7 +14,7 @@ func init():
 	match minigame.level:
 		_: spawn_timer = 1.3
 		2: spawn_timer = 0.9
-		3: spawn_timer = 0.5
+		3: spawn_timer = 0.3
 
 	spawn_timer /= minigame.speed_factor
 

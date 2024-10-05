@@ -54,8 +54,8 @@ var leniency = .4 #ROOM FOR ERROR, DO NOT SET HIGH YOU WILL GET AN INFINITE LOOP
 var thickness = 25 #DRAWN LINE THICKNESS
 
 
-
-func _ready():
+#Pengu custom, first beat
+func _on_start():
 	var mdt = MeshDataTool.new()
 	if level != 1: #EASY MODE PARAMS ARE ABOVE
 		if level == 2: #MEDIUM MODE PARAMS
@@ -89,10 +89,6 @@ func _ready():
 	while _checkmatch(vertices,target): #RANDOMLY ROTATE TARGET ROTATION UNTIL IT DOESNT MATCH
 		_rotateall(target,randf()*TAU,Vector3.DOWN,Vector3.ZERO)
 		_rotateall(target,randf()*TAU,Vector3.RIGHT,Vector3.ZERO)
-
-#Pengu custom, first beat
-func _on_start():
-	pass
 
 func _on_new_beat():
 	sizemult=1.05  #AMOUNT OF BEAT HOP, 1 IS DEFAULT SIZE

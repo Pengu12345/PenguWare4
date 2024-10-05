@@ -1,0 +1,92 @@
+[gd_scene load_steps=12 format=3 uid="uid://btaomcib4l5p8"]
+
+[ext_resource type="PackedScene" uid="uid://cyk50v17psa7f" path="res://core/game/core_minigame.tscn" id="1_7b2v6"]
+[ext_resource type="Script" path="res://game/minigames/min_doodle/min_doodle.gd" id="2_ary8o"]
+[ext_resource type="AudioStream" uid="uid://de64tldnluju4" path="res://resources/sound/music/minigames/mus_doodle.wav" id="3_a6yks"]
+[ext_resource type="PackedScene" uid="uid://dlmtst88wsky4" path="res://game/minigames/min_doodle/thwomp.tscn" id="4_kb0vf"]
+[ext_resource type="Texture2D" uid="uid://c3l3c2f2crn4k" path="res://game/minigames/min_doodle/guy3.png" id="4_qfeh4"]
+[ext_resource type="Script" path="res://game/minigames/min_doodle/doodle_player.gd" id="4_vtiwr"]
+[ext_resource type="Texture2D" uid="uid://caixvnmwyrtew" path="res://game/minigames/min_doodle/guy1.png" id="5_ceeul"]
+[ext_resource type="Texture2D" uid="uid://c6koxjnvr1spk" path="res://game/minigames/min_doodle/guy2.png" id="6_xp5wh"]
+[ext_resource type="AudioStream" uid="uid://b6f0rsakqixnp" path="res://game/minigames/min_doodle/sfx/walking.wav" id="9_p7hj1"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q0ryg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_qfeh4")
+}],
+"loop": true,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_ceeul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_xp5wh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i38nt"]
+radius = 89.9999
+height = 260.0
+
+[node name="min_doodle" node_paths=PackedStringArray("thwomps", "player") instance=ExtResource("1_7b2v6")]
+script = ExtResource("2_ary8o")
+thwomps = [NodePath("Thwomps/Thwomp"), NodePath("Thwomps/Thwomp2"), NodePath("Thwomps/Thwomp3"), NodePath("Thwomps/Thwomp4")]
+player = NodePath("Player")
+instruction = "Avoid!"
+main_music = ExtResource("3_a6yks")
+
+[node name="Background" parent="." index="1"]
+color = Color(0.419063, 0.549209, 0.562413, 1)
+
+[node name="Background2" type="ColorRect" parent="." index="2"]
+offset_top = 508.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.398681, 0.18186, 0.0596065, 0.670588)
+
+[node name="Thwomps" type="Node2D" parent="." index="3"]
+position = Vector2(65, 19)
+
+[node name="Thwomp" parent="Thwomps" index="0" instance=ExtResource("4_kb0vf")]
+position = Vector2(83, 316)
+
+[node name="Thwomp2" parent="Thwomps" index="1" instance=ExtResource("4_kb0vf")]
+position = Vector2(366, 316)
+
+[node name="Thwomp3" parent="Thwomps" index="2" instance=ExtResource("4_kb0vf")]
+position = Vector2(654, 316)
+
+[node name="Thwomp4" parent="Thwomps" index="3" instance=ExtResource("4_kb0vf")]
+position = Vector2(942, 316)
+
+[node name="Player" type="Node2D" parent="." index="4" node_paths=PackedStringArray("sprite", "walking_sound")]
+position = Vector2(584, 459)
+scale = Vector2(0.6, 0.6)
+script = ExtResource("4_vtiwr")
+sprite = NodePath("Sprite")
+walking_sound = NodePath("WalkingSound")
+
+[node name="ColorRect" type="Polygon2D" parent="Player" index="0"]
+position = Vector2(0, 111.667)
+color = Color(0, 0, 0, 0.419608)
+polygon = PackedVector2Array(-1.66669, -1.66669, 28.3333, -3.33337, 59.9999, 10, 69.9999, 35, 40, 50, -41.6667, 48.3333, -66.6667, 28.3333, -61.6667, 8.33331)
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Player" index="1"]
+sprite_frames = SubResource("SpriteFrames_q0ryg")
+
+[node name="Collision" type="Area2D" parent="Player" index="2"]
+position = Vector2(0, 28.3333)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Collision" index="0"]
+shape = SubResource("CapsuleShape2D_i38nt")
+
+[node name="WalkingSound" type="AudioStreamPlayer" parent="Player" index="3"]
+stream = ExtResource("9_p7hj1")

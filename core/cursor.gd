@@ -5,6 +5,8 @@ var cursor_path = "res://resources/texture/cursor.png"
 var cursor_node = null
 
 func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 	var image = load(cursor_path)
 	if image:
 		cursor_node = Sprite2D.new()

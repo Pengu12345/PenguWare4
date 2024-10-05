@@ -1,0 +1,54 @@
+[gd_scene load_steps=9 format=3 uid="uid://b8wyrt8vonve4"]
+
+[ext_resource type="PackedScene" uid="uid://cyk50v17psa7f" path="res://core/game/core_minigame.tscn" id="1_af3fn"]
+[ext_resource type="Script" path="res://game/minigames/min_balatro/min_balatro.gd" id="2_gq67t"]
+[ext_resource type="AudioStream" uid="uid://bcl6vk3a5x88b" path="res://resources/sound/music/minigames/balatro/mus_balatro1.wav" id="3_jb4x1"]
+[ext_resource type="VideoStream" path="res://game/minigames/min_balatro/Balatro_background_short.ogv" id="3_lq0qf"]
+[ext_resource type="PackedScene" uid="uid://dolc2vswngprv" path="res://game/minigames/min_balatro/card.tscn" id="3_ma7t3"]
+[ext_resource type="FontFile" uid="uid://dvudagw35kdth" path="res://resources/fonts/m6x11plus.ttf" id="4_o3yvr"]
+[ext_resource type="Shader" path="res://game/minigames/min_balatro/min_balatro.gdshader" id="7_7kkqu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c5uty"]
+shader = ExtResource("7_7kkqu")
+shader_parameter/scanline_count = 50.0
+
+[node name="min_balatro" node_paths=PackedStringArray("card_container") instance=ExtResource("1_af3fn")]
+script = ExtResource("2_gq67t")
+card_container = NodePath("CardsContainer")
+card_scene = ExtResource("3_ma7t3")
+instruction = "Choose highest!"
+main_music = ExtResource("3_jb4x1")
+
+[node name="Background" parent="." index="1"]
+color = Color(0.560955, 0.560955, 0.560955, 1)
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." index="2"]
+offset_right = 1152.0
+offset_bottom = 648.0
+stream = ExtResource("3_lq0qf")
+autoplay = true
+loop = true
+
+[node name="Label" type="Label" parent="." index="4"]
+offset_top = 52.0
+offset_right = 1152.0
+offset_bottom = 185.0
+pivot_offset = Vector2(576, 38)
+theme_override_fonts/font = ExtResource("4_o3yvr")
+theme_override_font_sizes/font_size = 56
+text = "Please select the highest card."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CardsContainer" type="HBoxContainer" parent="." index="5"]
+offset_left = 105.0
+offset_top = 251.0
+offset_right = 1052.0
+offset_bottom = 437.0
+alignment = 1
+
+[node name="Shader" type="ColorRect" parent="." index="6"]
+material = SubResource("ShaderMaterial_c5uty")
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2

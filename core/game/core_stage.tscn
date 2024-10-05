@@ -11,12 +11,13 @@
 [ext_resource type="AudioStream" uid="uid://cl8vxnj6eur1p" path="res://resources/sound/music/stages/pengu/mus_pengu_speedup.wav" id="8_43w4j"]
 [ext_resource type="AudioStream" uid="uid://cit1m4vp67gnr" path="res://resources/sound/music/stages/pengu/mus_pengu_gameover.wav" id="9_sceos"]
 
-[node name="core_stage" type="Node2D"]
+[node name="core_stage" type="Node2D" node_paths=PackedStringArray("pause_screen")]
 script = ExtResource("1_kegcf")
 control_schemes = {
 "mouse": ExtResource("2_11ftc"),
 "space": ExtResource("3_w3sfu")
 }
+pause_screen = NodePath("PauseScreen")
 begin_music = ExtResource("4_wbixm")
 neutral_music = ExtResource("5_s56n5")
 win_music = ExtResource("6_phm4j")
@@ -38,4 +39,72 @@ color = Color(0, 0, 0, 1)
 
 [node name="minigame_holder" parent="." instance=ExtResource("6_a0mmo")]
 
+[node name="PauseScreen" type="Control" parent="."]
+process_mode = 3
+process_priority = 1
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Background" type="ColorRect" parent="PauseScreen"]
+layout_mode = 0
+offset_left = -35.0
+offset_right = 1178.0
+offset_bottom = 672.0
+color = Color(0, 0, 0, 0.835294)
+
+[node name="Label" type="Label" parent="PauseScreen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -88.0
+offset_top = 68.0
+offset_right = 88.0
+offset_bottom = 137.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 50
+text = "Paused"
+
+[node name="ButtonUnpause" type="Button" parent="PauseScreen"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.500434
+anchor_top = 0.506173
+anchor_right = 0.500434
+anchor_bottom = 0.506173
+offset_left = -156.5
+offset_top = -36.0
+offset_right = 156.5
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "Resume"
+metadata/_edit_use_anchors_ = true
+
+[node name="ButtonReturn" type="Button" parent="PauseScreen"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.500434
+anchor_top = 0.697531
+anchor_right = 0.500434
+anchor_bottom = 0.697531
+offset_left = -156.5
+offset_top = -36.0
+offset_right = 156.5
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "Return to menu"
+metadata/_edit_use_anchors_ = true
+
 [connection signal="finished" from="main_music" to="." method="_on_main_music_finished"]
+[connection signal="pressed" from="PauseScreen/ButtonUnpause" to="." method="_on_button_unpause_pressed"]
+[connection signal="pressed" from="PauseScreen/ButtonReturn" to="." method="_on_button_return_pressed"]

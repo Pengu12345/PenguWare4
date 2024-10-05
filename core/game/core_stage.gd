@@ -14,12 +14,19 @@ enum GameState {
 	GAME_OVER
 }
 
+var global_sfx = {
+	"careful": "res://resources/sound/sfx/careful.wav"
+}
+
+
 # Signals
 signal signal_new_beat
 
 # Variables
 @export_category("UI")
 @export var control_schemes = {}
+
+@export var pause_screen : Control
 
 @export_category("Music Variables")
 @export var base_bpm = 120.00
@@ -56,6 +63,8 @@ var max_speed_factor = 100
 @export_category("Game Variables")
 @export var max_lives = 4
 
+@export var is_boss_enabled = true
+
 @onready var current_lives = max_lives
 var current_score = 1
 var current_level = 1
@@ -80,10 +89,16 @@ var minigame_list : Array = ["min_dummy"]
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_on_ready()
+	pause_screen.visible = false
+	init_game()
 
 func init_game():
 	is_game_active = true
 	is_game_over = false
+	is_boss_enabled = true
+	
+	if MenuManager.loaded_data.has("boss_enabled"):
+		is_boss_enabled = MenuManager.loaded_data["boss_enabled"]
 	
 	current_lives = max_lives
 	current_state = GameState.BEGIN
@@ -97,7 +112,10 @@ func init_game():
 	current_beat = 0
 	next_beat_time = 0
 	
-	set_speed_factor(1)
+	if MenuManager.loaded_data.has("speed_factor"):
+		set_speed_factor(MenuManager.loaded_data["speed_factor"])
+	else:
+		set_speed_factor(1)
 	
 	_play_state_music()
 	if enable_nonstop_music:
@@ -129,6 +147,10 @@ func set_speed_factor(new_speed_factor):
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if Input.is_action_just_pressed("ui_cancel"):
+		set_game_paused(true)
+	
+	
 	if is_game_active:
 		if enable_nonstop_music:
 			delta = jukebox.get_playback_position() - last_music_position
@@ -144,9 +166,6 @@ func _process(delta):
 				current_time -= next_beat_time
 				current_beat += 1
 				_new_beat()
-	else:
-		if Input.is_action_just_pressed("mouse_left"):
-			init_game()
 
 func _new_beat():
 	# Preload the minigame for any funny animations
@@ -155,6 +174,12 @@ func _new_beat():
 			minigame_holder.update_level(current_level)
 			# choose at random from the minigame list
 			_preload_minigame(current_minigame_id)
+			
+			var md = ResourcesManager.get_minigame_metadata(current_minigame_id)
+			if md.has("special") and md["special"] == true:
+				play_local_sfx(global_sfx["careful"], 8, true)
+
+		
 	
 	# Unload the current minigame for any funny animations (offset)
 	if current_state == GameState.WIN or current_state == GameState.LOSE:
@@ -327,8 +352,37 @@ func get_state_length(state : GameState):
 		_ : return 4
 #
 
-
 func _on_main_music_finished():
 	if enable_nonstop_music:
 		last_music_position = 0
 		jukebox.play()
+
+func set_game_paused(paused : bool):
+			is_game_active = !paused
+			get_tree().paused = paused
+			pause_screen.visible = paused
+
+
+func _on_button_unpause_pressed():
+	set_game_paused(false)
+
+
+func _on_button_return_pressed():
+	MenuManager.reset_stage_properties()
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://menu/MainMenu.tscn")
+
+func play_local_sfx(path : String, db = 0, adapt_speed = false):
+	var jukebox = AudioStreamPlayer.new()
+	var stream = load(path)
+	if stream:
+		jukebox.stream = stream
+		jukebox.volume_db = db
+		
+		if adapt_speed: jukebox.pitch_scale = speed_factor
+		
+		add_child(jukebox)
+		jukebox.finished.connect( func(): jukebox.queue_free())
+		jukebox.play()
+	else:
+		print("ERROR: Could not find the sound at path " + path)

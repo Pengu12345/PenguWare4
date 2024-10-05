@@ -24,7 +24,10 @@ var ignore_music = false
 @onready var beat_display = $UI/Label
 
 var global_sfx = {
-	"timer": "res://resources/sound/sfx/beep.wav"
+	"timer1": "res://resources/sound/sfx/timer1.wav",
+	"timer2": "res://resources/sound/sfx/timer2.wav",
+	"timer3": "res://resources/sound/sfx/timer3.wav",
+	"careful": "res://resources/sound/sfx/careful.wav"
 }
 
 var speed_factor = 1
@@ -58,6 +61,8 @@ func _process(delta):
 
 func _new_beat(beat):
 	
+	if !has_started: return
+	
 	var beat_left = minigame_length - beat - 1
 	
 	if !is_boss:
@@ -71,7 +76,11 @@ func _new_beat(beat):
 			clock.visible = true
 		
 		if beat_left <= 3 && beat_left >= 0:
-			play_local_sfx(global_sfx["timer"])
+			match beat_left:
+				3: play_local_sfx(global_sfx["timer1"])
+				2: play_local_sfx(global_sfx["timer2"])
+				1: play_local_sfx(global_sfx["timer3"])
+			
 			beat_animator.stop()
 			beat_animator.play("fade")
 			beat_display.text = str(beat_left)

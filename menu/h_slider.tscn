@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqlpi3cqws7co"]
+
+[ext_resource type="Script" path="res://menu/LabeledSlider.gd" id="1_tdnwh"]
+
+[node name="HSlider" type="HSlider"]
+offset_left = 392.0
+offset_right = 722.0
+offset_bottom = 16.0
+min_value = 0.5
+max_value = 3.0
+step = 0.1
+value = 1.0
+script = ExtResource("1_tdnwh")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_top = 25.0
+offset_right = 330.0
+offset_bottom = 48.0
+text = "Speed: 0"
+horizontal_alignment = 1
+
+[connection signal="value_changed" from="." to="." method="_on_value_changed"]

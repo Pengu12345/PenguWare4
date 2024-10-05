@@ -2,8 +2,8 @@
 	"min_dummy": {
 		"display_name":"Dummy Minigame",
 		"description":"This is just a dummy minigame.",
-		"length":8,
-		"controls":"mouse",
+		"length":4,
+		"controls":"mouse"
 	},
 	"min_chrome": {
 		"display_name":"No internet",
@@ -11,11 +11,23 @@
 		"length":8,
 		"controls":"space",
 	},
+	"min_doodle": {
+		"display_name":"Lil' guy fleeing",
+		"description":"This is just a dummy minigame.",
+		"length":8,
+		"controls":"keyboard",
+	},
 	"min_squareinator": {
 		"display_name":"Squareinator",
 		"description":"Rotate shapes or die",
 		"length":8,
 		"controls":"mouse",
+	},
+	"min_balatro": {
+		"display_name":"Highest hand",
+		"description":"Hand will not score unless you select the highest card!",
+		"length":4,
+		"controls":"mouse"
 	},
 	"min_boss_wwsc": {
 		"display_name":"Wii were so close!",

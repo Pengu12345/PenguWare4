@@ -22,7 +22,7 @@ var controls_enabled = false
 var is_on_ground = false
 var velocity_y = 0
 
-var gravity = 30
+var gravity = 40
 
 var has_lost = false
 
@@ -57,7 +57,7 @@ func _process(delta):
 			dinosaur.position.y = ground_pos
 	else:
 		if Input.is_action_just_pressed("ui_accept") && controls_enabled:
-			velocity_y = 10 * speed_factor
+			velocity_y = 14 * speed_factor
 			is_on_ground = false
 			play_local_sfx(sfx["jump"])
 	

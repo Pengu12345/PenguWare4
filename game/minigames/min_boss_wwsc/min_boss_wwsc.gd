@@ -41,9 +41,9 @@ func _on_start():
 	player_animator.speed_scale = speed_factor
 	
 	match level:
-		1: score_goal = 25
-		2: score_goal = 30
-		3: score_goal = 35
+		1: score_goal = 15
+		2: score_goal = 20
+		3: score_goal = 25
 		_: score_goal = 10
 	
 	goal_text.text = "Goal: " + str(score_goal)
@@ -100,7 +100,7 @@ func spawn_coin():
 	coin_node.position = p
 	coin_node.speed_factor = speed_factor
 	coin_node.init()
-	instances_node.add_child(coin_node)
+	instances_node.add_child(coin_node, true)
 	
 
 

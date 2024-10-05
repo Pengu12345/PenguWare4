@@ -1,0 +1,369 @@
+[gd_scene load_steps=14 format=3 uid="uid://c15bvv4d71w4x"]
+
+[ext_resource type="PackedScene" uid="uid://d4kqgv2rum2hs" path="res://core/game/core_stage.tscn" id="1_ngsh5"]
+[ext_resource type="Script" path="res://game/stages/stage_arcade/stage_arcade.gd" id="2_5tsuv"]
+[ext_resource type="AudioStream" uid="uid://to30w87wcisl" path="res://resources/sound/music/stages/retro/mus_retro_pre.wav" id="3_3rp2b"]
+[ext_resource type="AudioStream" uid="uid://ox0q34i7uwmy" path="res://resources/sound/music/stages/retro/mus_retro_neutral.wav" id="4_qap2k"]
+[ext_resource type="AudioStream" uid="uid://b0ked4hg5xas2" path="res://resources/sound/music/stages/retro/mus_retro_win.wav" id="5_13fqe"]
+[ext_resource type="AudioStream" uid="uid://cwg7hkcmhv2n7" path="res://resources/sound/music/stages/retro/mus_retro_lose.wav" id="6_hn83r"]
+[ext_resource type="AudioStream" uid="uid://qufty7nsyrpg" path="res://resources/sound/music/stages/retro/mus_retro_speedup.wav" id="7_y2i8i"]
+[ext_resource type="Texture2D" uid="uid://bfkchvjyvrbrw" path="res://game/stages/stage_arcade/arcade.png" id="8_l2wa6"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_d32c6"]
+blend_mode = 2
+
+[sub_resource type="Animation" id="Animation_5j22y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasGroup/Background:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasGroup/Arcade:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CanvasGroup/Arcade:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(581, 383)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CanvasGroup/Arcade:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.5781, 1.5781)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Stats Label:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 21)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Instruction:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Instruction:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_qws26"]
+resource_name = "neutral"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasGroup/Background:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 2, 2.3),
+"transitions": PackedFloat32Array(1, 1, 1, 0.25),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasGroup/Arcade:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.5, 1.8),
+"transitions": PackedFloat32Array(1, 1, 0.25),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CanvasGroup/Arcade:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(581, 383), Vector2(581, 383), Vector2(581, 1140)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CanvasGroup/Arcade:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.5, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1.5781, 1.5781), Vector2(1.5781, 1.5781), Vector2(11.2373, 11.2373)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Stats Label:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1, 1.5),
+"transitions": PackedFloat32Array(1, 0.5, 1),
+"update": 0,
+"values": [Vector2(0, 21), Vector2(0, 21), Vector2(0, -90)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Instruction:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.5, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Instruction:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 2.4, 3),
+"transitions": PackedFloat32Array(1, 2.21914, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, -400)]
+}
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(1.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"update_instruction_text"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_5a7nu"]
+resource_name = "win"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasGroup/Background:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1.10957, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasGroup/Arcade:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 2.63902),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CanvasGroup/Arcade:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(581, 1140), Vector2(581, 383)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CanvasGroup/Arcade:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(11.2373, 11.2373), Vector2(1.5781, 1.5781)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Stats Label:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(0, -90), Vector2(0, 21)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nicl2"]
+_data = {
+"RESET": SubResource("Animation_5j22y"),
+"neutral": SubResource("Animation_qws26"),
+"win": SubResource("Animation_5a7nu")
+}
+
+[node name="stage_arcade" node_paths=PackedStringArray("arcade_sprite", "background_image", "animator", "speed_label", "stats_label", "instruction") instance=ExtResource("1_ngsh5")]
+script = ExtResource("2_5tsuv")
+arcade_sprite = NodePath("CanvasGroup/Arcade")
+background_image = NodePath("CanvasGroup/Background")
+animator = NodePath("animator")
+speed_label = NodePath("Speed Label")
+stats_label = NodePath("Stats Label")
+instruction = NodePath("Instruction")
+begin_music = ExtResource("3_3rp2b")
+neutral_music = ExtResource("4_qap2k")
+win_music = ExtResource("5_13fqe")
+lose_music = ExtResource("6_hn83r")
+speedup_music = ExtResource("7_y2i8i")
+levelup_music = ExtResource("7_y2i8i")
+boss_music = ExtResource("7_y2i8i")
+
+[node name="minigame_slot" parent="." index="1"]
+position = Vector2(87, 50)
+scale = Vector2(0.85, 0.85)
+
+[node name="CanvasGroup" type="CanvasGroup" parent="." index="3"]
+
+[node name="Background" type="ColorRect" parent="CanvasGroup" index="0"]
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(29.4701, 16.8004)
+mouse_filter = 1
+
+[node name="Arcade" type="Sprite2D" parent="CanvasGroup" index="1"]
+position = Vector2(581, 383)
+scale = Vector2(1.5781, 1.5781)
+texture = ExtResource("8_l2wa6")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasGroup/Arcade" index="0"]
+material = SubResource("CanvasItemMaterial_d32c6")
+offset_left = -54.0
+offset_top = -111.0
+offset_right = 56.0
+offset_bottom = -41.0
+
+[node name="animator" type="AnimationPlayer" parent="." index="4"]
+libraries = {
+"": SubResource("AnimationLibrary_nicl2")
+}
+
+[node name="Speed Label" type="Label" parent="." index="6"]
+offset_left = 992.0
+offset_top = 604.0
+offset_right = 1142.0
+offset_bottom = 646.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 30
+text = "1.0"
+horizontal_alignment = 2
+
+[node name="Instruction" type="Label" parent="." index="7"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 45
+text = "Do something!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stats Label" type="Label" parent="." index="8"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 21.0
+offset_right = 1151.0
+offset_bottom = 63.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 30
+text = "Score: 1000     Lives: 1000"
+horizontal_alignment = 1

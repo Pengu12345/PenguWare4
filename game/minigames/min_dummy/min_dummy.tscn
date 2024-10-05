@@ -14,6 +14,9 @@ max_pears = 3
 instruction = "Collect!"
 main_music = ExtResource("4_yd5x0")
 
+[node name="music_player" parent="." index="0"]
+volume_db = -3.0
+
 [node name="Background" parent="." index="1"]
 color = Color(1, 1, 1, 1)
 

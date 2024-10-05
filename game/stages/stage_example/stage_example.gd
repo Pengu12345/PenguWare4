@@ -9,14 +9,21 @@ var boss_id = "min_boss_wwsc"
 var next_minigames = []
 
 func _on_ready():
-	minigame_list = ["min_squareinator", "min_chrome", "min_dummy"]
+	minigame_list = [
+		"min_chrome",
+		"min_dummy",
+		"min_squareinator",
+		"min_doodle",
+		"min_balatro"
+		] # Default
+	if MenuManager.loaded_data.has("loaded_minigames"):
+		minigame_list = MenuManager.loaded_data["loaded_minigames"]
+		
 	$Instruction.text = ""
 
 func _on_init_game():
 	background_animator.play("RESET")
 	main_animator.play("RESET")
-	
-	set_speed_factor(1)
 	
 	next_minigames = minigame_list.duplicate()
 	next_minigames.shuffle()
@@ -36,6 +43,7 @@ func _on_process(_delta):
 	$Score.text = "Score: " + str(current_score) + "\n Lives: " + str(current_lives)
 
 func _on_new_beat():
+	sprite_animator.stop()
 	sprite_animator.play("pulse")
 	
 func _on_new_state(new_state :  GameState):
@@ -82,7 +90,7 @@ func _on_minigame_end(minigame_state : Minigame.State):
 	
 	if next_minigames.size() == 0:
 		# If we weren't in a boss fight, enter it
-		if current_minigame_id != boss_id:
+		if current_minigame_id != boss_id && is_boss_enabled:
 			_queue_event(GameState.BOSS, true, func() : current_minigame_id = boss_id)
 		else:
 			# Re-shuffle the minigame list, and level up, or speed up
@@ -95,7 +103,7 @@ func _on_minigame_end(minigame_state : Minigame.State):
 	
 func get_state_length(state : GameState):
 	match state:
-		GameState.BEGIN : return 0
+		GameState.BEGIN : return 2
 		GameState.NEUTRAL : return 4
 		GameState.WIN     : return 4
 		GameState.LOSE    : return 4

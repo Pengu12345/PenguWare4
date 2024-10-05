@@ -39,7 +39,7 @@ func _on_end_minigame():
 		minigame_state = State.LOST
 
 func on_pear_collected():
-	play_local_sfx(sfx["eat"])
+	play_local_sfx(sfx["eat"], -5)
 	
 	score += 1
 	if score >= max_pears:
@@ -49,4 +49,4 @@ func on_pear_collected():
 		if level > 1: chef2.rise(speed_factor)
 		if level > 2: chef3.rise(speed_factor)
 		
-		play_local_sfx(sfx["kiss"], -3)
+		play_local_sfx(sfx["kiss"], -7)

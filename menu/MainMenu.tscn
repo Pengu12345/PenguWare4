@@ -1,0 +1,99 @@
+[gd_scene load_steps=3 format=3 uid="uid://b462sakolv8jw"]
+
+[ext_resource type="Script" path="res://menu/MainMenu.gd" id="1_nkrmy"]
+[ext_resource type="PackedScene" uid="uid://cqlpi3cqws7co" path="res://menu/h_slider.tscn" id="2_0gmnt"]
+
+[node name="MainMenu" type="Node2D" node_paths=PackedStringArray("button_start_normal", "button_start_unique", "speed_slider", "list_minigame_ids")]
+script = ExtResource("1_nkrmy")
+button_start_normal = NodePath("Container/ButtonStartNormal")
+button_start_unique = NodePath("Container/ShuffleContainer/ButtonStartSpecific")
+speed_slider = NodePath("Container/ShuffleContainer/HSlider")
+list_minigame_ids = NodePath("Container/ShuffleContainer/MinigameList")
+
+[node name="Container" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Title" type="Label" parent="Container"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 78.0
+offset_right = 20.0
+offset_bottom = 101.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 50
+text = "Wario Ware Custom Engine"
+
+[node name="ButtonStartNormal" type="Button" parent="Container"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.5
+offset_top = -37.5
+offset_right = 128.5
+offset_bottom = 37.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 35
+text = "Start Normal Shuffle "
+
+[node name="ShuffleContainer" type="Control" parent="Container"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = 69.0
+offset_right = 181.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ButtonStartSpecific" type="Button" parent="Container/ShuffleContainer"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.5
+offset_top = -75.0
+offset_right = 180.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 35
+text = "Custom Game"
+
+[node name="MinigameList" type="ItemList" parent="Container/ShuffleContainer"]
+layout_mode = 0
+offset_right = 361.0
+offset_bottom = 134.0
+allow_search = false
+item_count = 3
+item_0/text = "Dummy1"
+item_1/text = "Dummy2"
+item_2/text = "Dummy3"
+
+[node name="HSlider" parent="Container/ShuffleContainer" instance=ExtResource("2_0gmnt")]
+layout_mode = 0
+offset_left = 381.0
+offset_top = 48.0
+offset_right = 711.0
+offset_bottom = 64.0
+description = "Speed: "
+
+[connection signal="pressed" from="Container/ButtonStartNormal" to="." method="_on_button_start_normal_pressed"]
+[connection signal="pressed" from="Container/ShuffleContainer/ButtonStartSpecific" to="." method="_on_button_start_specific_pressed"]
